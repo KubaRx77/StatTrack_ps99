@@ -82,8 +82,21 @@
         }
         
         .logo-icon {
-            color: var(--text-color);
-            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--text-color);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .section-title {
@@ -146,7 +159,7 @@
             gap: 12px;
         }
 
-        /* Okrągły awatar - teraz bezpośrednio z Twoim obrazkiem */
+        /* Okrągły awatar - Twój obrazek */
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -395,15 +408,16 @@
 </head>
 <body>
 
-    <!-- --- PANEL BOCZNY (SIDEBAR) --- -->
     <div class="sidebar">
         <div class="sidebar-top">
-            <!-- Nazwa strony -->
             <a href="#" class="logo">
-                <span class="logo-icon">📊</span> TrackStat
+                <span class="logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 3v18h18M18.5 8.5l-5 5-3-3-4.5 4.5" />
+                    </svg>
+                </span> TrackStat
             </a>
 
-            <!-- Sekcja gry -->
             <div>
                 <div class="section-title">Games</div>
                 <div class="menu-list">
@@ -415,24 +429,19 @@
             </div>
         </div>
 
-        <!-- Profil kubarx7 z Twoim ciemnym zdjęciem profilowym w okręgu -->
         <div class="user-profile">
             <div class="user-info">
-                <!-- Twoje poprawne zdjęcie profilowe wewnątrz lewego okręgu -->
                 <img src="https://i.imgur.com/ObQ0Xvd.gif" alt="kubarx7 avatar" class="user-avatar">
                 <div class="user-details">
                     <div class="user-name-wrapper">
                         <span class="user-name">kubarx7</span>
                     </div>
-                    <!-- Ranga Owner -->
                     <span class="user-role">Owner</span>
                 </div>
             </div>
             
-            <!-- Trzy Kropki (Kliknięcie otwiera menu) -->
             <div class="profile-more" id="theme-btn">⋮</div>
 
-            <!-- Rozwijane Menu Wyboru Koloru -->
             <div class="theme-dropdown" id="theme-dropdown">
                 <button class="dropdown-item" onclick="setTheme('dark')">
                     🌑 Czarny tło
@@ -444,14 +453,12 @@
         </div>
     </div>
 
-    <!-- --- GŁÓWNA ZAWARTOŚĆ STRONY --- -->
     <div class="main-content">
         <div class="container">
             <header>
-                <h1>Pet Simulator 99 Dashboard</h1>
+                <h1>Pet Simulator 99 | TrackStat</h1>
             </header>
 
-            <!-- Górne statystyki łączone ze wszystkich kont -->
             <div class="stats-grid">
                 <div class="stat-card online">
                     <span class="title">🤖 Online / Total</span>
@@ -477,7 +484,6 @@
                 </div>
             </div>
 
-            <!-- Tabela kont -->
             <div class="table-container">
                 <table>
                     <thead>
