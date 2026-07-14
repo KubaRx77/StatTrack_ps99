@@ -5,34 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Sim 99 | StatTrack</title>
     <style>
-        /* DOMYŚLNE ZMIENNE DLA PROFILU CIEMNEGO (DARK) */
+        /* PROFIL PRAWDZIWEJ CZERNI (TRUE BLACK / CHARCOAL) - BEZ NIEBIESKIEGO TONU */
         :root {
-            --bg-color: #0f172a;        /* Bardzo ciemne tło strony */
-            --sidebar-bg: #1e293b;     /* Ciemne tło panelu bocznego */
-            --card-bg: #1e293b;         /* Ciemne tła kart i tabeli */
-            --text-color: #f1f5f9;      /* Jasny tekst główny */
-            --text-secondary: #94a3b8;  /* Szary tekst pomocniczy */
-            --border-color: #334155;    /* Ciemniejsze obramowania */
-            --accent-blue: #38bdf8;     /* Jaśniejszy błękit */
-            --accent-green: #4ade80;    /* Soczysta zieleń */
-            --accent-pink: #f472b6;     /* Jasny róż */
-            --hover-row: #334155;       /* Hover w tabeli */
-            --dropdown-bg: #1e293b;     /* Tło menu rozwijanego */
+            --bg-color: #0a0a0a;        /* Głębokie, czyste czarne tło */
+            --sidebar-bg: #121212;     /* Ciemnoszary węgiel dla panelu bocznego */
+            --card-bg: #121212;         /* Ciemnoszary węgiel dla kart i tabeli */
+            --text-color: #f5f5f5;      /* Czysty jasny tekst */
+            --text-secondary: #a3a3a3;  /* Neutralny szary tekst pomocniczy */
+            --border-color: #262626;    /* Neutralne ciemnoszare ramki */
+            --accent-blue: #ffffff;     /* Biały/srebrny jako główny neutralny akcent zamiast niebieskiego */
+            --accent-green: #22c55e;    /* Soczysta zieleń online */
+            --accent-pink: #ec4899;     /* Róż dla Huge */
+            --hover-row: #1e1e1e;       /* Ciemny hover w tabeli */
+            --dropdown-bg: #171717;     /* Tło menu rozwijanego */
         }
 
-        /* ZMIENNE DLA PROFILU JASNEGO (LIGHT) */
+        /* PROFIL JASNEGO MOTYWU (LIGHT) */
         [data-theme="light"] {
-            --bg-color: #f8fafc;        /* Jasne tło strony */
-            --sidebar-bg: #ffffff;     /* Białe tło panelu bocznego */
-            --card-bg: #ffffff;         /* Białe tła kart i tabeli */
-            --text-color: #0f172a;      /* Ciemny tekst główny */
-            --text-secondary: #64748b;  /* Ciemniejszy szary tekst pomocniczy */
-            --border-color: #e2e8f0;    /* Jasne obramowania */
-            --accent-blue: #0284c7;     /* Ciemniejszy błękit (kontrast) */
-            --accent-green: #16a34a;    /* Ciemniejsza zieleń */
-            --accent-pink: #db2777;     /* Ciemniejszy róż */
-            --hover-row: #f1f5f9;       /* Hover w tabeli w jasnym motywie */
-            --dropdown-bg: #ffffff;     /* Tło menu w jasnym motywie */
+            --bg-color: #f8fafc;        
+            --sidebar-bg: #ffffff;     
+            --card-bg: #ffffff;         
+            --text-color: #0f172a;      
+            --text-secondary: #64748b;  
+            --border-color: #e2e8f0;    
+            --accent-blue: #0f172a;     
+            --accent-green: #16a34a;    
+            --accent-pink: #db2777;     
+            --hover-row: #f1f5f9;       
+            --dropdown-bg: #ffffff;     
         }
 
         body {
@@ -82,7 +82,7 @@
         }
         
         .logo-icon {
-            color: var(--accent-blue);
+            color: var(--text-color);
             font-size: 22px;
         }
 
@@ -122,7 +122,7 @@
             background-color: var(--hover-row);
         }
 
-        /* Styl dla logotypu Pet Simulator 99 w menu */
+        /* Logotyp Pet Simulator 99 */
         .menu-item img {
             width: 24px;
             height: 24px;
@@ -137,7 +137,7 @@
             padding: 12px 8px;
             border-top: 1px solid var(--border-color);
             margin-top: auto;
-            position: relative; /* Potrzebne do pozycjonowania menu rozwijanego */
+            position: relative;
         }
 
         .user-info {
@@ -150,7 +150,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #475569;
+            background-color: #262626;
             object-fit: cover;
         }
 
@@ -167,7 +167,7 @@
 
         .user-role {
             font-size: 12px;
-            color: var(--accent-blue);
+            color: var(--text-secondary);
             font-weight: 500;
         }
 
@@ -186,14 +186,14 @@
 
         /* --- ROZWIJANE MENU WYBORU KOLORU --- */
         .theme-dropdown {
-            display: none; /* Domyślnie ukryte */
+            display: none;
             position: absolute;
             bottom: 60px;
             right: 8px;
             background-color: var(--dropdown-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             width: 140px;
             padding: 6px;
             z-index: 200;
@@ -228,7 +228,7 @@
 
         /* --- GŁÓWNA ZAWARTOŚĆ STRONY --- */
         .main-content {
-            margin-left: 260px; /* Przesunięcie o szerokość panelu */
+            margin-left: 260px;
             flex-grow: 1;
             padding: 40px;
             box-sizing: border-box;
@@ -267,7 +267,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             transition: background-color 0.3s, border-color 0.3s;
@@ -291,11 +291,11 @@
         }
 
         .stat-card.online .value { color: var(--accent-green); }
-        .stat-card.gems .value { color: var(--accent-blue); }
+        .stat-card.gems .value { color: #f5f5f5; } /* Neutralna biel w czarnym motywie */
         .stat-card.huge .value { color: var(--accent-pink); }
-        .stat-card.titanic .value { color: var(--accent-blue); }
+        .stat-card.titanic .value { color: #a3a3a3; } /* Neutralny szary */
 
-        /* Styl dla ikonek w kafelkach i tabeli */
+        /* Styl dla ikonek */
         .item-icon {
             width: 22px;
             height: 22px;
@@ -308,7 +308,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             overflow-x: auto;
             transition: background-color 0.3s, border-color 0.3s;
         }
@@ -330,7 +330,6 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        /* Kontener dla nagłówków z flexboxem */
         .th-flex {
             display: flex;
             align-items: center;
@@ -361,10 +360,10 @@
             font-size: 12px;
         }
 
-        /* Odznaki dopasowane do motywów */
-        .badge-gems { background-color: rgba(14, 165, 233, 0.15); color: var(--accent-blue); border: 1px solid rgba(14, 165, 233, 0.3); }
-        .badge-huge { background-color: rgba(236, 72, 153, 0.15); color: var(--accent-pink); border: 1px solid rgba(236, 72, 153, 0.3); }
-        .badge-titanic { background-color: rgba(6, 182, 212, 0.15); color: var(--accent-blue); border: 1px solid rgba(6, 182, 212, 0.3); }
+        /* Odznaki dopasowane do neutralnego czarnego schematu */
+        .badge-gems { background-color: rgba(245, 245, 245, 0.08); color: var(--text-color); border: 1px solid rgba(245, 245, 245, 0.15); }
+        .badge-huge { background-color: rgba(236, 72, 153, 0.12); color: var(--accent-pink); border: 1px solid rgba(236, 72, 153, 0.25); }
+        .badge-titanic { background-color: rgba(163, 163, 163, 0.1); color: var(--text-secondary); border: 1px solid rgba(163, 163, 163, 0.2); }
 
         /* Kropka statusu */
         .status-dot {
@@ -375,7 +374,7 @@
             margin-right: 10px;
         }
         .status-dot.online { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
-        .status-dot.offline { background-color: #64748b; }
+        .status-dot.offline { background-color: #525252; }
 
         .account-name {
             font-weight: 600;
@@ -406,7 +405,7 @@
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="user-avatar" style="background: #475569; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white;">👤</div>
+                <div class="user-avatar" style="background: #262626; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white;">👤</div>
                 <div class="user-details">
                     <span class="user-name">kubarx7</span>
                     <span class="user-role">Premium</span>
@@ -496,18 +495,15 @@
         const themeBtn = document.getElementById('theme-btn');
         const themeDropdown = document.getElementById('theme-dropdown');
 
-        // Kliknięcie w 3 kropki otwiera / zamyka menu
         themeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             themeDropdown.classList.toggle('show');
         });
 
-        // Zamknięcie menu po kliknięciu gdziekolwiek indziej
         document.addEventListener('click', () => {
             themeDropdown.classList.remove('show');
         });
 
-        // Funkcja zmieniająca motyw
         function setTheme(theme) {
             if (theme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -519,7 +515,6 @@
             themeDropdown.classList.remove('show');
         }
 
-        // Wczytanie zapisanego motywu z pamięci przy starcie strony
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             setTheme('light');
