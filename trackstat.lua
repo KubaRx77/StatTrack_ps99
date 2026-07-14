@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local localPlayer = Players.LocalPlayer
 
 -- Twój link do bazy danych Firebase
-local FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats/" .. localPlayer.Name .. ".json"
+local FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/" .. localPlayer.Name .. ".json"
 
 local Library = require(ReplicatedStorage:WaitForChild("Library"))
 local SaveModule = Library.Save
