@@ -63,6 +63,9 @@
             color: #64748b;
             letter-spacing: 0.5px;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .stat-card .value {
@@ -73,6 +76,14 @@
         .stat-card.gems .value { color: var(--accent-blue); }
         .stat-card.huge .value { color: var(--accent-pink); }
         .stat-card.titanic .value { color: #06b6d4; }
+
+        /* Styl dla nowej ikonki gems */
+        .gem-icon {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            object-fit: contain;
+        }
 
         /* Tabela z kontami */
         .table-container {
@@ -97,6 +108,21 @@
             font-weight: 600;
             padding: 14px 20px;
             border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Wyśrodkowanie ikony w nagłówku tabeli */
+        th.gems-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: none; /* Reset dla flexboxa w th */
+        }
+        
+        /* Osobny kontener dla th z flexboxem, żeby linia pod th została */
+        .th-flex {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         td {
@@ -137,10 +163,11 @@
             <h1>Pet Simulator 99 Dashboard</h1>
         </header>
 
-        <!-- Górne statystyki łączone ze wszystkich kont -->
         <div class="stats-grid">
             <div class="stat-card gems">
-                <span class="title">💎 Total Gems</span>
+                <span class="title">
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="gem-icon" alt="Gems"> Total Gems
+                </span>
                 <span id="total-gems" class="value">0.00 B</span>
             </div>
             <div class="stat-card huge">
@@ -153,13 +180,16 @@
             </div>
         </div>
 
-        <!-- Tabela kont -->
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Account</th>
-                        <th>Gems</th>
+                        <th>
+                            <div class="th-flex">
+                                <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="gem-icon" alt="Gems"> Gems
+                            </div>
+                        </th>
                         <th>Huge</th>
                         <th>Titanic</th>
                     </tr>
@@ -196,6 +226,8 @@
                 Object.keys(data).forEach(accountKey => {
                     const account = data[accountKey];
                     
+                    if (!account) return;
+
                     const username = account.username || accountKey;
                     const gems = account.diamonds || 0;
                     const huge = account.hugePets || 0;
@@ -218,7 +250,12 @@
                 });
 
                 // Aktualizujemy kafelki na górze
-                document.getElementById('total-gems').innerText = (totalGems / 1000000000).toFixed(2) + " B";
+                if (totalGems >= 1000000000) {
+                    document.getElementById('total-gems').innerText = (totalGems / 1000000000).toFixed(2) + " B";
+                } else {
+                    document.getElementById('total-gems').innerText = (totalGems / 1000000).toFixed(2) + " M";
+                }
+                
                 document.getElementById('total-huge').innerText = totalHuge;
                 document.getElementById('total-titanic').innerText = totalTitanic;
 
