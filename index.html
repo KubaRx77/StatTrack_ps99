@@ -6,13 +6,14 @@
     <title>Pet Sim 99 | StatTrack</title>
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --accent-blue: #0ea5e9;
-            --accent-green: #10b981;
-            --accent-pink: #ec4899;
+            --bg-color: #0f172a;        /* Bardzo ciemne tło */
+            --card-bg: #1e293b;         /* Ciemne tła kart i tabeli */
+            --text-color: #f1f5f9;      /* Jasny tekst główny */
+            --text-secondary: #94a3b8;  /* Szary tekst pomocniczy */
+            --border-color: #334155;    /* Ciemniejsze obramowania */
+            --accent-blue: #38bdf8;     /* Jaśniejszy błękit dla lepszego kontrastu */
+            --accent-green: #4ade80;    /* Soczysta zieleń */
+            --accent-pink: #f472b6;     /* Jasny róż */
         }
 
         body {
@@ -30,12 +31,15 @@
 
         header {
             margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
         header h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 700;
+            color: #ffffff;
         }
 
         /* Górne kafelki podsumowujące */
@@ -51,7 +55,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
         }
@@ -60,7 +64,7 @@
             font-size: 12px;
             text-transform: uppercase;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-secondary);
             letter-spacing: 0.5px;
             margin-bottom: 8px;
             display: flex;
@@ -76,7 +80,7 @@
         .stat-card.online .value { color: var(--accent-green); }
         .stat-card.gems .value { color: var(--accent-blue); }
         .stat-card.huge .value { color: var(--accent-pink); }
-        .stat-card.titanic .value { color: #06b6d4; }
+        .stat-card.titanic .value { color: #22d3ee; }
 
         /* Styl dla ikonek w kafelkach i tabeli */
         .item-icon {
@@ -91,7 +95,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
             overflow-x: auto;
         }
 
@@ -102,13 +106,13 @@
         }
 
         th {
-            background-color: #f1f5f9;
-            color: #475569;
+            background-color: #1e293b;
+            color: var(--text-secondary);
             font-size: 12px;
             text-transform: uppercase;
             font-weight: 600;
             padding: 14px 20px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
         }
 
         /* Kontener dla nagłówków z flexboxem */
@@ -122,6 +126,7 @@
             padding: 16px 20px;
             border-bottom: 1px solid var(--border-color);
             font-size: 14px;
+            color: #e2e8f0;
         }
 
         tr:last-child td {
@@ -129,20 +134,21 @@
         }
 
         tr:hover {
-            background-color: #f8fafc;
+            background-color: #334155;
         }
 
         .badge {
             display: inline-block;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 6px;
             font-weight: 600;
             font-size: 12px;
         }
 
-        .badge-gems { background-color: #e0f2fe; color: #0369a1; }
-        .badge-huge { background-color: #fce7f3; color: #be185d; }
-        .badge-titanic { background-color: #ecfeff; color: #0e7490; }
+        /* Dopasowane kolory odznak pod ciemny motyw */
+        .badge-gems { background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
+        .badge-huge { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+        .badge-titanic { background-color: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
 
         /* Kropka statusu Online/Offline przy nazwie konta */
         .status-dot {
@@ -150,14 +156,14 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            margin-right: 8px;
+            margin-right: 10px;
         }
-        .status-dot.online { background-color: var(--accent-green); }
-        .status-dot.offline { background-color: #94a3b8; }
+        .status-dot.online { background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-dot.offline { background-color: #64748b; }
 
         .account-name {
             font-weight: 600;
-            color: #0f172a;
+            color: #ffffff;
             display: flex;
             align-items: center;
         }
@@ -218,7 +224,7 @@
                 </thead>
                 <tbody id="accounts-table-body">
                     <tr>
-                        <td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">
+                        <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 30px;">
                             Czekam na dane ze skryptu...
                         </td>
                     </tr>
@@ -241,7 +247,7 @@
                 }
 
                 const tableBody = document.getElementById('accounts-table-body');
-                tableBody.innerHTML = ''; // Czyścimy tabelę
+                tableBody.innerHTML = ''; // Czyścimy tabelę przed załadowaniem nowych danych
 
                 let totalGems = 0;
                 let totalHuge = 0;
@@ -278,7 +284,7 @@
                     totalHuge += huge;
                     totalTitanic += titanic;
 
-                    // Tworzymy wiersz w tabeli dla tego konta wraz z kropką statusu
+                    // Tworzymy wiersz w tabeli dla tego konta
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="account-name">
