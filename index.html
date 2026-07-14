@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Sim 99 | StatTrack</title>
     <style>
+        /* DOMYŚLNE ZMIENNE DLA PROFILU CIEMNEGO (DARK) */
         :root {
             --bg-color: #0f172a;        /* Bardzo ciemne tło strony */
             --sidebar-bg: #1e293b;     /* Ciemne tło panelu bocznego */
@@ -15,6 +16,23 @@
             --accent-blue: #38bdf8;     /* Jaśniejszy błękit */
             --accent-green: #4ade80;    /* Soczysta zieleń */
             --accent-pink: #f472b6;     /* Jasny róż */
+            --hover-row: #334155;       /* Hover w tabeli */
+            --dropdown-bg: #1e293b;     /* Tło menu rozwijanego */
+        }
+
+        /* ZMIENNE DLA PROFILU JASNEGO (LIGHT) */
+        [data-theme="light"] {
+            --bg-color: #f8fafc;        /* Jasne tło strony */
+            --sidebar-bg: #ffffff;     /* Białe tło panelu bocznego */
+            --card-bg: #ffffff;         /* Białe tła kart i tabeli */
+            --text-color: #0f172a;      /* Ciemny tekst główny */
+            --text-secondary: #64748b;  /* Ciemniejszy szary tekst pomocniczy */
+            --border-color: #e2e8f0;    /* Jasne obramowania */
+            --accent-blue: #0284c7;     /* Ciemniejszy błękit (kontrast) */
+            --accent-green: #16a34a;    /* Ciemniejsza zieleń */
+            --accent-pink: #db2777;     /* Ciemniejszy róż */
+            --hover-row: #f1f5f9;       /* Hover w tabeli w jasnym motywie */
+            --dropdown-bg: #ffffff;     /* Tło menu w jasnym motywie */
         }
 
         body {
@@ -25,6 +43,7 @@
             padding: 0;
             display: flex;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* --- PANEL BOCZNY (SIDEBAR) --- */
@@ -42,6 +61,7 @@
             padding: 24px 16px;
             box-sizing: border-box;
             z-index: 100;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .sidebar-top {
@@ -57,7 +77,7 @@
             gap: 10px;
             font-size: 20px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-color);
             text-decoration: none;
         }
         
@@ -90,7 +110,7 @@
             align-items: center;
             gap: 12px;
             padding: 10px 12px;
-            color: #e2e8f0;
+            color: var(--text-color);
             text-decoration: none;
             border-radius: 8px;
             font-size: 14px;
@@ -99,8 +119,7 @@
         }
 
         .menu-item:hover, .menu-item.active {
-            background-color: #334155;
-            color: #ffffff;
+            background-color: var(--hover-row);
         }
 
         /* Styl dla logotypu Pet Simulator 99 w menu */
@@ -118,6 +137,7 @@
             padding: 12px 8px;
             border-top: 1px solid var(--border-color);
             margin-top: auto;
+            position: relative; /* Potrzebne do pozycjonowania menu rozwijanego */
         }
 
         .user-info {
@@ -142,7 +162,7 @@
         .user-name {
             font-size: 14px;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-color);
         }
 
         .user-role {
@@ -154,8 +174,56 @@
         .profile-more {
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 18px;
-            padding: 4px;
+            font-size: 20px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .profile-more:hover {
+            background-color: var(--hover-row);
+        }
+
+        /* --- ROZWIJANE MENU WYBORU KOLORU --- */
+        .theme-dropdown {
+            display: none; /* Domyślnie ukryte */
+            position: absolute;
+            bottom: 60px;
+            right: 8px;
+            background-color: var(--dropdown-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            width: 140px;
+            padding: 6px;
+            z-index: 200;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .theme-dropdown.show {
+            display: flex;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            color: var(--text-color);
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-row);
         }
 
         /* --- GŁÓWNA ZAWARTOŚĆ STRONY --- */
@@ -164,6 +232,7 @@
             flex-grow: 1;
             padding: 40px;
             box-sizing: border-box;
+            transition: padding 0.3s;
         }
 
         .container {
@@ -175,13 +244,14 @@
             margin-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
+            transition: border-color 0.3s;
         }
 
         header h1 {
             margin: 0;
             font-size: 26px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--text-color);
         }
 
         /* Górne kafelki podsumowujące */
@@ -197,9 +267,10 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .stat-card .title {
@@ -222,7 +293,7 @@
         .stat-card.online .value { color: var(--accent-green); }
         .stat-card.gems .value { color: var(--accent-blue); }
         .stat-card.huge .value { color: var(--accent-pink); }
-        .stat-card.titanic .value { color: #22d3ee; }
+        .stat-card.titanic .value { color: var(--accent-blue); }
 
         /* Styl dla ikonek w kafelkach i tabeli */
         .item-icon {
@@ -237,8 +308,9 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             overflow-x: auto;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         table {
@@ -248,13 +320,14 @@
         }
 
         th {
-            background-color: #1e293b;
+            background-color: var(--card-bg);
             color: var(--text-secondary);
             font-size: 12px;
             text-transform: uppercase;
             font-weight: 600;
             padding: 14px 20px;
             border-bottom: 2px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         /* Kontener dla nagłówków z flexboxem */
@@ -268,7 +341,8 @@
             padding: 16px 20px;
             border-bottom: 1px solid var(--border-color);
             font-size: 14px;
-            color: #e2e8f0;
+            color: var(--text-color);
+            transition: border-color 0.3s, color 0.3s;
         }
 
         tr:last-child td {
@@ -276,7 +350,7 @@
         }
 
         tr:hover {
-            background-color: #334155;
+            background-color: var(--hover-row);
         }
 
         .badge {
@@ -287,10 +361,10 @@
             font-size: 12px;
         }
 
-        /* Odznaki */
-        .badge-gems { background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
-        .badge-huge { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
-        .badge-titanic { background-color: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
+        /* Odznaki dopasowane do motywów */
+        .badge-gems { background-color: rgba(14, 165, 233, 0.15); color: var(--accent-blue); border: 1px solid rgba(14, 165, 233, 0.3); }
+        .badge-huge { background-color: rgba(236, 72, 153, 0.15); color: var(--accent-pink); border: 1px solid rgba(236, 72, 153, 0.3); }
+        .badge-titanic { background-color: rgba(6, 182, 212, 0.15); color: var(--accent-blue); border: 1px solid rgba(6, 182, 212, 0.3); }
 
         /* Kropka statusu */
         .status-dot {
@@ -305,7 +379,7 @@
 
         .account-name {
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-color);
             display: flex;
             align-items: center;
         }
@@ -313,15 +387,12 @@
 </head>
 <body>
 
-    <!-- --- PANEL BOCZNY (SIDEBAR) --- -->
     <div class="sidebar">
         <div class="sidebar-top">
-            <!-- Nazwa strony -->
             <a href="#" class="logo">
                 <span class="logo-icon">📊</span> TrackStat
             </a>
 
-            <!-- Sekcja gry -->
             <div>
                 <div class="section-title">Games</div>
                 <div class="menu-list">
@@ -333,27 +404,34 @@
             </div>
         </div>
 
-        <!-- Profil kubarx7 na dole -->
         <div class="user-profile">
             <div class="user-info">
-                <div class="user-avatar" style="background: #111827; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
+                <div class="user-avatar" style="background: #475569; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white;">👤</div>
                 <div class="user-details">
                     <span class="user-name">kubarx7</span>
                     <span class="user-role">Premium</span>
                 </div>
             </div>
-            <div class="profile-more">⋮</div>
+            
+            <div class="profile-more" id="theme-btn">⋮</div>
+
+            <div class="theme-dropdown" id="theme-dropdown">
+                <button class="dropdown-item" onclick="setTheme('dark')">
+                    🌑 Czarny tło
+                </button>
+                <button class="dropdown-item" onclick="setTheme('light')">
+                    ☀️ Biały tło
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- --- GŁÓWNA ZAWARTOŚĆ STRONY --- -->
     <div class="main-content">
         <div class="container">
             <header>
                 <h1>Pet Simulator 99 Dashboard</h1>
             </header>
 
-            <!-- Górne statystyki łączone ze wszystkich kont -->
             <div class="stats-grid">
                 <div class="stat-card online">
                     <span class="title">🤖 Online / Total</span>
@@ -379,7 +457,6 @@
                 </div>
             </div>
 
-            <!-- Tabela kont -->
             <div class="table-container">
                 <table>
                     <thead>
@@ -415,6 +492,42 @@
     </div>
 
     <script>
+        // --- OBSŁUGA MOTYWÓW ---
+        const themeBtn = document.getElementById('theme-btn');
+        const themeDropdown = document.getElementById('theme-dropdown');
+
+        // Kliknięcie w 3 kropki otwiera / zamyka menu
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeDropdown.classList.toggle('show');
+        });
+
+        // Zamknięcie menu po kliknięciu gdziekolwiek indziej
+        document.addEventListener('click', () => {
+            themeDropdown.classList.remove('show');
+        });
+
+        // Funkcja zmieniająca motyw
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+            }
+            themeDropdown.classList.remove('show');
+        }
+
+        // Wczytanie zapisanego motywu z pamięci przy starcie strony
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            setTheme('light');
+        } else {
+            setTheme('dark');
+        }
+
+        // --- OBSŁUGA POBIERANIA DANYCH Z FIREBASE ---
         const FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats.json";
 
         async function fetchAllStats() {
