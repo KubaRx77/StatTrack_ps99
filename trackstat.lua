@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local localPlayer = Players.LocalPlayer
 
--- POPRAWIONY LINK: Dodaliśmy "stats/" przed nickiem gracza
+-- Link do bazy danych Firebase
 local FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats/" .. localPlayer.Name .. ".json"
 
 local Library = require(ReplicatedStorage:WaitForChild("Library"))
@@ -30,11 +30,13 @@ local function sendDataToFirebase()
         end
     end
 
+    -- Tworzymy dane do wysłania, dodając pole lastActive (czas w sekundach)
     local payload = {
         username = localPlayer.Name,
         hugePets = hugeCount,
         titanicPets = titanicCount,
-        diamonds = diamondsCount
+        diamonds = diamondsCount,
+        lastActive = os.time() -- Ta linijka pozwala określić status Online/Offline
     }
 
     -- Uniwersalne żądanie dla różnych executorów (Xeno / Potassium / i inne)
