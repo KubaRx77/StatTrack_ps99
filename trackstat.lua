@@ -2,8 +2,8 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local localPlayer = Players.LocalPlayer
 
--- Twój link do bazy danych Firebase
-local FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/" .. localPlayer.Name .. ".json"
+-- POPRAWIONY LINK: Dodaliśmy "stats/" przed nickiem gracza
+local FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats/" .. localPlayer.Name .. ".json"
 
 local Library = require(ReplicatedStorage:WaitForChild("Library"))
 local SaveModule = Library.Save
@@ -37,21 +37,28 @@ local function sendDataToFirebase()
         diamonds = diamondsCount
     }
 
-    local success, response = pcall(function()
-        return request({
-            Url = FIREBASE_URL,
-            Method = "PUT",
-            Headers = {
-                ["Content-Type"] = "application/json"
-            },
-            Body = game:GetService("HttpService"):JSONEncode(payload)
-        })
-    end)
+    -- Uniwersalne żądanie dla różnych executorów (Xeno / Potassium / i inne)
+    local requestFunction = request or http_request or (syn and syn.request)
 
-    if success then
-        print("Zaktualizowano konto " .. localPlayer.Name .. " w Firebase!")
+    if requestFunction then
+        local success, response = pcall(function()
+            return requestFunction({
+                Url = FIREBASE_URL,
+                Method = "PUT",
+                Headers = {
+                    ["Content-Type"] = "application/json"
+                },
+                Body = game:GetService("HttpService"):JSONEncode(payload)
+            })
+        end)
+
+        if success then
+            print("Zaktualizowano konto " .. localPlayer.Name .. " w Firebase!")
+        else
+            warn("Błąd wysyłania konta " .. localPlayer.Name .. ":", response)
+        end
     else
-        warn("Błąd wysyłania konta " .. localPlayer.Name .. ":", response)
+        warn("Twój executor nie obsługuje wysyłania żądań HTTP!")
     end
 end
 
