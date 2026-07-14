@@ -77,10 +77,10 @@
         .stat-card.huge .value { color: var(--accent-pink); }
         .stat-card.titanic .value { color: #06b6d4; }
 
-        /* Styl dla nowej ikonki gems */
-        .gem-icon {
-            width: 20px;
-            height: 20px;
+        /* Styl dla ikonek w kafelkach i tabeli */
+        .item-icon {
+            width: 22px;
+            height: 22px;
             vertical-align: middle;
             object-fit: contain;
         }
@@ -110,15 +110,7 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* Wyśrodkowanie ikony w nagłówku tabeli */
-        th.gems-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border-bottom: none; /* Reset dla flexboxa w th */
-        }
-        
-        /* Osobny kontener dla th z flexboxem, żeby linia pod th została */
+        /* Kontener dla nagłówków z flexboxem, aby ikona i tekst były w jednej linii */
         .th-flex {
             display: flex;
             align-items: center;
@@ -166,16 +158,20 @@
         <div class="stats-grid">
             <div class="stat-card gems">
                 <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="gem-icon" alt="Gems"> Total Gems
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Total Gems
                 </span>
                 <span id="total-gems" class="value">0.00 B</span>
             </div>
             <div class="stat-card huge">
-                <span class="title">🐱 Total Huge</span>
+                <span class="title">
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Total Huge
+                </span>
                 <span id="total-huge" class="value">0</span>
             </div>
             <div class="stat-card titanic">
-                <span class="title">🐯 Total Titanic</span>
+                <span class="title">
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Total Titanic
+                </span>
                 <span id="total-titanic" class="value">0</span>
             </div>
         </div>
@@ -187,11 +183,19 @@
                         <th>Account</th>
                         <th>
                             <div class="th-flex">
-                                <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="gem-icon" alt="Gems"> Gems
+                                <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Gems
                             </div>
                         </th>
-                        <th>Huge</th>
-                        <th>Titanic</th>
+                        <th>
+                            <div class="th-flex">
+                                <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Huge
+                            </div>
+                        </th>
+                        <th>
+                            <div class="th-flex">
+                                <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Titanic
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="accounts-table-body">
