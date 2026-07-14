@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>PS99 Stat Tracker</title>
+    <style>
+        body { background: #121212; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .card { background: #1e1e1e; border: 2px solid #ffaa00; display: inline-block; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 300px; }
+        h1 { color: #ffaa00; margin-bottom: 5px; font-size: 24px; }
+        .stat { font-size: 20px; margin: 15px 0; display: flex; justify-content: space-between; padding: 0 20px; }
+        .huge { color: #ff55ff; font-weight: bold; }
+        .titanic { color: #55ffff; font-weight: bold; }
+        .gems { color: #55ff55; font-weight: bold; }
+        hr { border: 0; border-top: 1px solid #444; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>PS99 Stat Tracker</h1>
+        <p>Gracz: <strong id="username">Czekam na skrypt...</strong></p>
+        <hr>
+        <div class="stat"><span>🐱 Huge:</span> <span id="huge" class="huge">0</span></div>
+        <div class="stat"><span>🐯 Titanic:</span> <span id="titanic" class="titanic">0</span></div>
+        <div class="stat"><span>💎 Diamonds:</span> <span id="gems" class="gems">0</span></div>
+    </div>
+
+    <script>
+        const FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats.json";
+
+        async function fetchStats() {
+            try {
+                const res = await fetch(FIREBASE_URL);
+                const data = await res.json();
+                if (data) {
+                    document.getElementById('username').innerText = data.username || "Nieznany";
+                    document.getElementById('huge').innerText = data.hugePets || 0;
+                    document.getElementById('titanic').innerText = data.titanicPets || 0;
+                    document.getElementById('gems').innerText = ((data.diamonds || 0) / 1000000).toFixed(2) + "M";
+                }
+            } catch(e) {
+                console.error("Blad pobierania danych z Firebase", e);
+            }
+        }
+        setInterval(fetchStats, 3000); // Odświeża stronę co 3 sekundy
+        fetchStats();
+    </script>
+</body>
+</html>
