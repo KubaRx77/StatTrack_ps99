@@ -73,6 +73,7 @@
             font-weight: 700;
         }
 
+        .stat-card.online .value { color: var(--accent-green); }
         .stat-card.gems .value { color: var(--accent-blue); }
         .stat-card.huge .value { color: var(--accent-pink); }
         .stat-card.titanic .value { color: #06b6d4; }
@@ -110,7 +111,7 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        /* Kontener dla nagłówków z flexboxem, aby ikona i tekst były w jednej linii */
+        /* Kontener dla nagłówków z flexboxem */
         .th-flex {
             display: flex;
             align-items: center;
@@ -143,9 +144,22 @@
         .badge-huge { background-color: #fce7f3; color: #be185d; }
         .badge-titanic { background-color: #ecfeff; color: #0e7490; }
 
+        /* Kropka statusu Online/Offline przy nazwie konta */
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-dot.online { background-color: var(--accent-green); }
+        .status-dot.offline { background-color: #94a3b8; }
+
         .account-name {
             font-weight: 600;
             color: #0f172a;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
@@ -156,21 +170,25 @@
         </header>
 
         <div class="stats-grid">
+            <div class="stat-card online">
+                <span class="title">🤖 Online / Total</span>
+                <span id="online-counter" class="value">0/0</span>
+            </div>
             <div class="stat-card gems">
                 <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> | Gems
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Total Gems
                 </span>
                 <span id="total-gems" class="value">0.00 B</span>
             </div>
             <div class="stat-card huge">
                 <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> | Huge
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Total Huge
                 </span>
                 <span id="total-huge" class="value">0</span>
             </div>
             <div class="stat-card titanic">
                 <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> | Titanic
+                    <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Total Titanic
                 </span>
                 <span id="total-titanic" class="value">0</span>
             </div>
@@ -217,14 +235,22 @@
                 const res = await fetch(FIREBASE_URL);
                 const data = await res.json();
                 
-                if (!data) return;
+                if (!data) {
+                    document.getElementById('online-counter').innerText = "0/0";
+                    return;
+                }
 
                 const tableBody = document.getElementById('accounts-table-body');
-                tableBody.innerHTML = ''; // Czyścimy tabelę przed załadowaniem nowych danych
+                tableBody.innerHTML = ''; // Czyścimy tabelę
 
                 let totalGems = 0;
                 let totalHuge = 0;
                 let totalTitanic = 0;
+                
+                let totalAccounts = 0;
+                let onlineAccounts = 0;
+
+                const nowSeconds = Math.floor(Date.now() / 1000); // Aktualny czas w sekundach
 
                 // Przechodzimy przez wszystkie konta zapisane w bazie
                 Object.keys(data).forEach(accountKey => {
@@ -232,20 +258,33 @@
                     
                     if (!account) return;
 
+                    totalAccounts++;
+
                     const username = account.username || accountKey;
                     const gems = account.diamonds || 0;
                     const huge = account.hugePets || 0;
                     const titanic = account.titanicPets || 0;
+                    
+                    // Sprawdzamy czy konto wysłało dane w ciągu ostatnich 45 sekund
+                    const lastActive = account.lastActive || 0;
+                    const isOnline = (nowSeconds - lastActive) < 45;
+
+                    if (isOnline) {
+                        onlineAccounts++;
+                    }
 
                     // Sumujemy do górnych kafelków
                     totalGems += gems;
                     totalHuge += huge;
                     totalTitanic += titanic;
 
-                    // Tworzymy wiersz w tabeli dla tego konta
+                    // Tworzymy wiersz w tabeli dla tego konta wraz z kropką statusu
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td class="account-name">${username}</td>
+                        <td class="account-name">
+                            <span class="status-dot ${isOnline ? 'online' : 'offline'}"></span>
+                            ${username}
+                        </td>
                         <td><span class="badge badge-gems">${(gems / 1000000).toFixed(2)}M</span></td>
                         <td><span class="badge badge-huge">${huge}</span></td>
                         <td><span class="badge badge-titanic">${titanic}</span></td>
@@ -254,6 +293,8 @@
                 });
 
                 // Aktualizujemy kafelki na górze
+                document.getElementById('online-counter').innerText = `${onlineAccounts}/${totalAccounts}`;
+
                 if (totalGems >= 1000000000) {
                     document.getElementById('total-gems').innerText = (totalGems / 1000000000).toFixed(2) + " B";
                 } else {
