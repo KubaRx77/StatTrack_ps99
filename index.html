@@ -6,12 +6,13 @@
     <title>Pet Sim 99 | StatTrack</title>
     <style>
         :root {
-            --bg-color: #0f172a;        /* Bardzo ciemne tło */
+            --bg-color: #0f172a;        /* Bardzo ciemne tło strony */
+            --sidebar-bg: #1e293b;     /* Ciemne tło panelu bocznego */
             --card-bg: #1e293b;         /* Ciemne tła kart i tabeli */
             --text-color: #f1f5f9;      /* Jasny tekst główny */
             --text-secondary: #94a3b8;  /* Szary tekst pomocniczy */
             --border-color: #334155;    /* Ciemniejsze obramowania */
-            --accent-blue: #38bdf8;     /* Jaśniejszy błękit dla lepszego kontrastu */
+            --accent-blue: #38bdf8;     /* Jaśniejszy błękit */
             --accent-green: #4ade80;    /* Soczysta zieleń */
             --accent-pink: #f472b6;     /* Jasny róż */
         }
@@ -21,23 +22,171 @@
             color: var(--text-color);
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 30px;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- PANEL BOCZNY (SIDEBAR) --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 24px 16px;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Logo u góry panelu */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            color: var(--accent-blue);
+            font-size: 20px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            padding-left: 8px;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: #e2e8f0;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #334155;
+            color: #ffffff;
+        }
+
+        .menu-item img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* Profil użytkownika na dole panelu */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 8px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #475569;
+            object-fit: cover;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .profile-more {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px;
+        }
+
+        /* --- GŁÓWNA ZAWARTOŚĆ STRONY --- */
+        .main-content {
+            margin-left: 260px; /* Przesunięcie o szerokość panelu */
+            flex-grow: 1;
+            padding: 40px;
+            box-sizing: border-box;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         header {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
         header h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             color: #ffffff;
         }
@@ -55,7 +204,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
         }
@@ -145,12 +294,12 @@
             font-size: 12px;
         }
 
-        /* Dopasowane kolory odznak pod ciemny motyw */
+        /* Odznaki */
         .badge-gems { background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); }
         .badge-huge { background-color: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
         .badge-titanic { background-color: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.3); }
 
-        /* Kropka statusu Online/Offline przy nazwie konta */
+        /* Kropka statusu */
         .status-dot {
             display: inline-block;
             width: 8px;
@@ -170,66 +319,119 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Pet Simulator 99 Dashboard</h1>
-        </header>
 
-        <div class="stats-grid">
-            <div class="stat-card online">
-                <span class="title">🤖 Online / Total</span>
-                <span id="online-counter" class="value">0/0</span>
+    <!-- --- PANEL BOCZNY (SIDEBAR) --- -->
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <!-- Nazwa strony -->
+            <a href="#" class="logo">
+                <span class="logo-icon">📊</span> Yummy TrackStat
+            </a>
+
+            <!-- Sekcja gry -->
+            <div>
+                <div class="section-title">Games</div>
+                <div class="menu-list">
+                    <a href="#" class="menu-item active">
+                        <img src="https://img-b.udemycdn.com/course/480x270/6166416_f6ef.jpg" alt="PS99 Icon" onerror="this.src='https://assets.roblox.com/a42b1029df49514757314777cd328b9c'">
+                        Pet Simulator 99
+                    </a>
+                </div>
             </div>
-            <div class="stat-card gems">
-                <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Total Gems
-                </span>
-                <span id="total-gems" class="value">0.00 B</span>
-            </div>
-            <div class="stat-card huge">
-                <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Total Huge
-                </span>
-                <span id="total-huge" class="value">0</span>
-            </div>
-            <div class="stat-card titanic">
-                <span class="title">
-                    <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Total Titanic
-                </span>
-                <span id="total-titanic" class="value">0</span>
+
+            <!-- Sekcja statystyk -->
+            <div>
+                <div class="section-title">Game Insights</div>
+                <div class="menu-list">
+                    <a href="#" class="menu-item">
+                        <span class="menu-icon">📈</span> Chart
+                    </a>
+                    <a href="#" class="menu-item">
+                        <span class="menu-icon">🔗</span> Share
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Account</th>
-                        <th>
-                            <div class="th-flex">
-                                <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Gems
-                            </div>
-                        </th>
-                        <th>
-                            <div class="th-flex">
-                                <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Huge
-                            </div>
-                        </th>
-                        <th>
-                            <div class="th-flex">
-                                <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Titanic
-                            </div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="accounts-table-body">
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 30px;">
-                            Czekam na dane ze skryptu...
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Profil kubarx7 na dole -->
+        <div class="user-profile">
+            <div class="user-info">
+                <!-- Domyślny czarny awatar profilowy -->
+                <div class="user-avatar" style="background: #111827; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
+                <div class="user-details">
+                    <span class="user-name">kubarx7</span>
+                    <span class="user-role">Premium</span>
+                </div>
+            </div>
+            <div class="profile-more">⋮</div>
+        </div>
+    </div>
+
+    <!-- --- GŁÓWNA ZAWARTOŚĆ STRONY --- -->
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Pet Simulator 99 Dashboard</h1>
+            </header>
+
+            <!-- Górne statystyki łączone ze wszystkich kont -->
+            <div class="stats-grid">
+                <div class="stat-card online">
+                    <span class="title">🤖 Online / Total</span>
+                    <span id="online-counter" class="value">0/0</span>
+                </div>
+                <div class="stat-card gems">
+                    <span class="title">
+                        <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Total Gems
+                    </span>
+                    <span id="total-gems" class="value">0.00 B</span>
+                </div>
+                <div class="stat-card huge">
+                    <span class="title">
+                        <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Total Huge
+                    </span>
+                    <span id="total-huge" class="value">0</span>
+                </div>
+                <div class="stat-card titanic">
+                    <span class="title">
+                        <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Total Titanic
+                    </span>
+                    <span id="total-titanic" class="value">0</span>
+                </div>
+            </div>
+
+            <!-- Tabela kont -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>
+                                <div class="th-flex">
+                                    <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> Gems
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-flex">
+                                    <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> Huge
+                                </div>
+                            </th>
+                            <th>
+                                <div class="th-flex">
+                                    <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> Titanic
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="accounts-table-body">
+                        <tr>
+                            <td colspan="4" style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                Czekam na dane ze skryptu...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -247,7 +449,7 @@
                 }
 
                 const tableBody = document.getElementById('accounts-table-body');
-                tableBody.innerHTML = ''; // Czyścimy tabelę przed załadowaniem nowych danych
+                tableBody.innerHTML = ''; 
 
                 let totalGems = 0;
                 let totalHuge = 0;
@@ -256,9 +458,8 @@
                 let totalAccounts = 0;
                 let onlineAccounts = 0;
 
-                const nowSeconds = Math.floor(Date.now() / 1000); // Aktualny czas w sekundach
+                const nowSeconds = Math.floor(Date.now() / 1000); 
 
-                // Przechodzimy przez wszystkie konta zapisane w bazie
                 Object.keys(data).forEach(accountKey => {
                     const account = data[accountKey];
                     
@@ -271,7 +472,6 @@
                     const huge = account.hugePets || 0;
                     const titanic = account.titanicPets || 0;
                     
-                    // Sprawdzamy czy konto wysłało dane w ciągu ostatnich 45 sekund
                     const lastActive = account.lastActive || 0;
                     const isOnline = (nowSeconds - lastActive) < 45;
 
@@ -279,12 +479,10 @@
                         onlineAccounts++;
                     }
 
-                    // Sumujemy do górnych kafelków
                     totalGems += gems;
                     totalHuge += huge;
                     totalTitanic += titanic;
 
-                    // Tworzymy wiersz w tabeli dla tego konta
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="account-name">
@@ -298,7 +496,6 @@
                     tableBody.appendChild(row);
                 });
 
-                // Aktualizujemy kafelki na górze
                 document.getElementById('online-counter').innerText = `${onlineAccounts}/${totalAccounts}`;
 
                 if (totalGems >= 1000000000) {
@@ -315,7 +512,6 @@
             }
         }
 
-        // Odświeżanie co 3 sekundy
         setInterval(fetchAllStats, 3000);
         fetchAllStats();
     </script>
