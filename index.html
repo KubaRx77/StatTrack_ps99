@@ -2,47 +2,234 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>PS99 Stat Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Simulator 99 - Admin Panel</title>
     <style>
-        body { background: #121212; color: white; font-family: sans-serif; text-align: center; padding-top: 50px; }
-        .card { background: #1e1e1e; border: 2px solid #ffaa00; display: inline-block; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 300px; }
-        h1 { color: #ffaa00; margin-bottom: 5px; font-size: 24px; }
-        .stat { font-size: 20px; margin: 15px 0; display: flex; justify-content: space-between; padding: 0 20px; }
-        .huge { color: #ff55ff; font-weight: bold; }
-        .titanic { color: #55ffff; font-weight: bold; }
-        .gems { color: #55ff55; font-weight: bold; }
-        hr { border: 0; border-top: 1px solid #444; margin: 15px 0; }
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --accent-blue: #0ea5e9;
+            --accent-green: #10b981;
+            --accent-pink: #ec4899;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Górne kafelki podsumowujące */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card .title {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #64748b;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stat-card.gems .value { color: var(--accent-blue); }
+        .stat-card.huge .value { color: var(--accent-pink); }
+        .stat-card.titanic .value { color: #06b6d4; }
+
+        /* Tabela z kontami */
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .badge-gems { background-color: #e0f2fe; color: #0369a1; }
+        .badge-huge { background-color: #fce7f3; color: #be185d; }
+        .badge-titanic { background-color: #ecfeff; color: #0e7490; }
+
+        .account-name {
+            font-weight: 600;
+            color: #0f172a;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>PS99 Stat Tracker</h1>
-        <p>Gracz: <strong id="username">Czekam na skrypt...</strong></p>
-        <hr>
-        <div class="stat"><span>🐱 Huge:</span> <span id="huge" class="huge">0</span></div>
-        <div class="stat"><span>🐯 Titanic:</span> <span id="titanic" class="titanic">0</span></div>
-        <div class="stat"><span>💎 Diamonds:</span> <span id="gems" class="gems">0</span></div>
+    <div class="container">
+        <header>
+            <h1>Pet Simulator 99 Dashboard</h1>
+        </header>
+
+        <!-- Górne statystyki łączone ze wszystkich kont -->
+        <div class="stats-grid">
+            <div class="stat-card gems">
+                <span class="title">💎 Total Gems</span>
+                <span id="total-gems" class="value">0.00 B</span>
+            </div>
+            <div class="stat-card huge">
+                <span class="title">🐱 Total Huge</span>
+                <span id="total-huge" class="value">0</span>
+            </div>
+            <div class="stat-card titanic">
+                <span class="title">🐯 Total Titanic</span>
+                <span id="total-titanic" class="value">0</span>
+            </div>
+        </div>
+
+        <!-- Tabela kont -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th>Gems</th>
+                        <th>Huge</th>
+                        <th>Titanic</th>
+                    </tr>
+                </thead>
+                <tbody id="accounts-table-body">
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">
+                            Czekam na dane ze skryptu...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
         const FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats.json";
 
-        async function fetchStats() {
+        async function fetchAllStats() {
             try {
                 const res = await fetch(FIREBASE_URL);
                 const data = await res.json();
-                if (data) {
-                    document.getElementById('username').innerText = data.username || "Nieznany";
-                    document.getElementById('huge').innerText = data.hugePets || 0;
-                    document.getElementById('titanic').innerText = data.titanicPets || 0;
-                    document.getElementById('gems').innerText = ((data.diamonds || 0) / 1000000).toFixed(2) + "M";
-                }
-            } catch(e) {
-                console.error("Blad pobierania danych z Firebase", e);
+                
+                if (!data) return;
+
+                const tableBody = document.getElementById('accounts-table-body');
+                tableBody.innerHTML = ''; // Czyścimy tabelę przed załadowaniem nowych danych
+
+                let totalGems = 0;
+                let totalHuge = 0;
+                let totalTitanic = 0;
+
+                // Przechodzimy przez wszystkie konta zapisane w bazie
+                Object.keys(data).forEach(accountKey => {
+                    const account = data[accountKey];
+                    
+                    const username = account.username || accountKey;
+                    const gems = account.diamonds || 0;
+                    const huge = account.hugePets || 0;
+                    const titanic = account.titanicPets || 0;
+
+                    // Sumujemy do górnych kafelków
+                    totalGems += gems;
+                    totalHuge += huge;
+                    totalTitanic += titanic;
+
+                    // Tworzymy wiersz w tabeli dla tego konta
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="account-name">${username}</td>
+                        <td><span class="badge badge-gems">${(gems / 1000000).toFixed(2)}M</span></td>
+                        <td><span class="badge badge-huge">${huge}</span></td>
+                        <td><span class="badge badge-titanic">${titanic}</span></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Aktualizujemy kafelki na górze
+                document.getElementById('total-gems').innerText = (totalGems / 1000000000).toFixed(2) + " B";
+                document.getElementById('total-huge').innerText = totalHuge;
+                document.getElementById('total-titanic').innerText = totalTitanic;
+
+            } catch (e) {
+                console.error("Błąd podczas pobierania danych z Firebase:", e);
             }
         }
-        setInterval(fetchStats, 3000); // Odświeża stronę co 3 sekundy
-        fetchStats();
+
+        // Odświeżanie co 3 sekundy
+        setInterval(fetchAllStats, 3000);
+        fetchAllStats();
     </script>
 </body>
 </html>
