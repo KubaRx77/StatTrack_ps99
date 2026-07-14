@@ -55,7 +55,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: #ffffff;
             text-decoration: none;
@@ -63,7 +63,7 @@
         
         .logo-icon {
             color: var(--accent-blue);
-            font-size: 20px;
+            font-size: 22px;
         }
 
         .section-title {
@@ -79,7 +79,7 @@
         .menu-list {
             list-style: none;
             padding: 0;
-            margin: 0 0 16px 0;
+            margin: 0;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -103,18 +103,11 @@
             color: #ffffff;
         }
 
+        /* Styl dla logotypu Pet Simulator 99 w menu */
         .menu-item img {
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            object-fit: cover;
-        }
-
-        .menu-icon {
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
-            color: var(--text-secondary);
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
         }
 
         /* Profil użytkownika na dole panelu */
@@ -325,7 +318,7 @@
         <div class="sidebar-top">
             <!-- Nazwa strony -->
             <a href="#" class="logo">
-                <span class="logo-icon">📊</span> Yummy TrackStat
+                <span class="logo-icon">📊</span> TrackStat
             </a>
 
             <!-- Sekcja gry -->
@@ -333,21 +326,8 @@
                 <div class="section-title">Games</div>
                 <div class="menu-list">
                     <a href="#" class="menu-item active">
-                        <img src="https://img-b.udemycdn.com/course/480x270/6166416_f6ef.jpg" alt="PS99 Icon" onerror="this.src='https://assets.roblox.com/a42b1029df49514757314777cd328b9c'">
+                        <img src="https://yummytrackstat.com/items/pet-simulator-99/logo.webp" alt="PS99 Logo">
                         Pet Simulator 99
-                    </a>
-                </div>
-            </div>
-
-            <!-- Sekcja statystyk -->
-            <div>
-                <div class="section-title">Game Insights</div>
-                <div class="menu-list">
-                    <a href="#" class="menu-item">
-                        <span class="menu-icon">📈</span> Chart
-                    </a>
-                    <a href="#" class="menu-item">
-                        <span class="menu-icon">🔗</span> Share
                     </a>
                 </div>
             </div>
@@ -356,7 +336,6 @@
         <!-- Profil kubarx7 na dole -->
         <div class="user-profile">
             <div class="user-info">
-                <!-- Domyślny czarny awatar profilowy -->
                 <div class="user-avatar" style="background: #111827; display: flex; align-items: center; justify-content: center; font-size: 18px;">👤</div>
                 <div class="user-details">
                     <span class="user-name">kubarx7</span>
