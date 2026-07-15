@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Sim 99 | StatTrack</title>
+    <!-- Ikona diamentu na karcie przeglądarki (Favicon) -->
     <link rel="icon" href="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" type="image/webp">
     <style>
         /* PROFIL PRAWDZIWEJ CZERNI (TRUE BLACK / CHARCOAL) - BEZ NIEBIESKIEGO TONU */
@@ -197,7 +198,7 @@
             gap: 12px;
         }
 
-        /* Okrągły awatar - Twój obrazek */
+        /* Okrągły awatar */
         .user-avatar {
             width: 40px;
             height: 40px;
@@ -213,7 +214,6 @@
             flex-direction: column;
         }
 
-        /* Kontener na nazwę użytkownika */
         .user-name-wrapper {
             display: flex;
             align-items: center;
@@ -332,6 +332,14 @@
             display: flex;
             flex-direction: column;
             transition: background-color 0.3s, border-color 0.3s;
+            position: relative;
+        }
+
+        .stat-card .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
         .stat-card .title {
@@ -340,10 +348,22 @@
             font-weight: 600;
             color: var(--text-secondary);
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+
+        /* Licznik na godzinę w prawym górnym rogu */
+        .stat-card .hourly-rate {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        /* Zielone podświetlenie dla aktywnego dropu */
+        .stat-card .hourly-rate.active {
+            color: var(--accent-green);
         }
 
         .stat-card .value {
@@ -421,7 +441,6 @@
             font-size: 12px;
         }
 
-        /* Odznaki dopasowane do neutralnego czarnego schematu */
         .badge-gems { background-color: rgba(245, 245, 245, 0.08); color: var(--text-color); border: 1px solid rgba(245, 245, 245, 0.15); }
         .badge-huge { background-color: rgba(236, 72, 153, 0.12); color: var(--accent-pink); border: 1px solid rgba(236, 72, 153, 0.25); }
         .badge-titanic { background-color: rgba(163, 163, 163, 0.1); color: var(--text-secondary); border: 1px solid rgba(163, 163, 163, 0.2); }
@@ -482,6 +501,7 @@
 </head>
 <body>
 
+    <!-- --- PANEL BOCZNY (SIDEBAR) --- -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-top">
             <div class="logo-container">
@@ -537,6 +557,7 @@
         </div>
     </div>
 
+    <!-- --- GŁÓWNA ZAWARTOŚĆ STRONY --- -->
     <div class="main-content" id="main-content">
         <div class="container">
             <header>
@@ -545,29 +566,41 @@
 
             <div class="stats-grid">
                 <div class="stat-card online">
-                    <span class="title">🤖 | ONLINE / TOTAL</span>
+                    <div class="title-row">
+                        <span class="title">🤖 | ONLINE / TOTAL</span>
+                    </div>
                     <span id="online-counter" class="value">0/0</span>
                 </div>
                 <div class="stat-card gems">
-                    <span class="title">
-                        <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> | GEMS
-                    </span>
+                    <div class="title-row">
+                        <span class="title">
+                            <img src="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" class="item-icon" alt="Gems"> | GEMS
+                        </span>
+                    </div>
                     <span id="total-gems" class="value">0.00 B</span>
                 </div>
                 <div class="stat-card huge">
-                    <span class="title">
-                        <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> | HUGE
-                    </span>
+                    <div class="title-row">
+                        <span class="title">
+                            <img src="https://yummytrackstat.com/items/pet-simulator-99/total_huge.webp" class="item-icon" alt="Huge"> | HUGE
+                        </span>
+                        <!-- Licznik /hr z zieloną kropką / podświetleniem po dropie -->
+                        <span id="huge-hourly" class="hourly-rate">0/hr</span>
+                    </div>
                     <span id="total-huge" class="value">0</span>
                 </div>
                 <div class="stat-card titanic">
-                    <span class="title">
-                        <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> | TITANIC
-                    </span>
+                    <div class="title-row">
+                        <span class="title">
+                            <img src="https://yummytrackstat.com/items/pet-simulator-99/titanic.webp" class="item-icon" alt="Titanic"> | TITANIC
+                        </span>
+                        <span id="titanic-hourly" class="hourly-rate">0/hr</span>
+                    </div>
                     <span id="total-titanic" class="value">0</span>
                 </div>
             </div>
 
+            <!-- Tabela kont -->
             <div class="table-container">
                 <table>
                     <thead>
@@ -611,13 +644,10 @@
         sidebarToggle.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('collapsed');
-            
-            // Zapisz stan panelu (zwinięty/rozwinięty) w przeglądarce, aby nie resetował się przy odświeżeniu
             const isCollapsed = sidebar.classList.contains('collapsed');
             localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
         });
 
-        // Przywróć stan zwinięcia po załadowaniu strony
         if (localStorage.getItem('sidebar-collapsed') === 'true') {
             sidebar.classList.add('collapsed');
             mainContent.classList.add('collapsed');
@@ -654,8 +684,48 @@
             setTheme('dark');
         }
 
+        // --- SYSTEM ŠLEDZENIA DROPÓW (HOURLY TRACKER) ---
+        // Funkcja ładująca historię dropów zapisaną w przeglądarce
+        function getDropHistory(type) {
+            const data = localStorage.getItem(`drops_${type}`);
+            return data ? JSON.parse(data) : [];
+        }
+
+        // Dodaje nowy drop do historii z aktualnym czasem
+        function recordDrop(type, amount) {
+            let history = getDropHistory(type);
+            const now = Date.now();
+            for (let i = 0; i < amount; i++) {
+                history.push(now);
+            }
+            localStorage.setItem(`drops_${type}`, JSON.stringify(history));
+        }
+
+        // Filtruje i zwraca liczbę dropów z ostatnich 60 minut
+        function updateHourlyDisplay(type, elementId) {
+            const history = getDropHistory(type);
+            const oneHourAgo = Date.now() - (60 * 60 * 1000);
+            
+            // Zachowaj w historii tylko te z ostatniej godziny
+            const recentDrops = history.filter(timestamp => timestamp > oneHourAgo);
+            localStorage.setItem(`drops_${type}`, JSON.stringify(recentDrops));
+
+            const element = document.getElementById(elementId);
+            if (recentDrops.length > 0) {
+                element.innerText = `+${recentDrops.length}/hr`;
+                element.classList.add('active');
+            } else {
+                element.innerText = `0/hr`;
+                element.classList.remove('active');
+            }
+        }
+
         // --- OBSŁUGA POBIERANIA DANYCH Z FIREBASE ---
         const FIREBASE_URL = "https://stattrack-1eff0-default-rtdb.firebaseio.com/stats.json";
+        
+        // Zmienne do porównywania czy zaszły zmiany w liczbie zwierzaków
+        let previousTotalHuge = null;
+        let previousTotalTitanic = null;
 
         async function fetchAllStats() {
             try {
@@ -717,6 +787,7 @@
 
                 document.getElementById('online-counter').innerText = `${onlineAccounts}/${totalAccounts}`;
 
+                // Wyświetlanie sumy diamentów
                 if (totalGems >= 1000000000) {
                     document.getElementById('total-gems').innerText = (totalGems / 1000000000).toFixed(2) + " B";
                 } else {
@@ -726,12 +797,36 @@
                 document.getElementById('total-huge').innerText = totalHuge;
                 document.getElementById('total-titanic').innerText = totalTitanic;
 
+                // --- DETEKCJA NOWYCH DROPOW ---
+                if (previousTotalHuge !== null && totalHuge > previousTotalHuge) {
+                    const diff = totalHuge - previousTotalHuge;
+                    recordDrop('huge', diff);
+                }
+                if (previousTotalTitanic !== null && totalTitanic > previousTotalTitanic) {
+                    const diff = totalTitanic - previousTotalTitanic;
+                    recordDrop('titanic', diff);
+                }
+
+                // Przypisz aktualne wartości jako poprzednie do kolejnego cyklu
+                previousTotalHuge = totalHuge;
+                previousTotalTitanic = totalTitanic;
+
+                // Aktualizuj kafelki pod kątem statystyk godzinowych
+                updateHourlyDisplay('huge', 'huge-hourly');
+                updateHourlyDisplay('titanic', 'titanic-hourly');
+
             } catch (e) {
                 console.error("Błąd podczas pobierania danych z Firebase:", e);
             }
         }
 
+        // Cykliczne odświeżanie danych i wyświetlania dropów
         setInterval(fetchAllStats, 3000);
+        setInterval(() => {
+            updateHourlyDisplay('huge', 'huge-hourly');
+            updateHourlyDisplay('titanic', 'titanic-hourly');
+        }, 10000); // Częstsze czyszczenie wygasłych dropów w tle
+
         fetchAllStats();
     </script>
 </body>
