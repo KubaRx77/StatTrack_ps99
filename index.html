@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" type="image/webp">
     <title>Pet Sim 99 | StatTrack</title>
+    <link rel="icon" href="https://yummytrackstat.com/items/pet-simulator-99/gem.webp" type="image/webp">
     <style>
         /* PROFIL PRAWDZIWEJ CZERNI (TRUE BLACK / CHARCOAL) - BEZ NIEBIESKIEGO TONU */
         :root {
@@ -62,13 +62,21 @@
             padding: 24px 16px;
             box-sizing: border-box;
             z-index: 100;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: width 0.3s, padding 0.3s, background-color 0.3s, border-color 0.3s;
         }
 
         .sidebar-top {
             display: flex;
             flex-direction: column;
             gap: 24px;
+        }
+
+        /* Kontener na Logo i Przycisk zwijania */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
         }
 
         /* Logo u góry panelu */
@@ -80,6 +88,7 @@
             font-weight: 700;
             color: var(--text-color);
             text-decoration: none;
+            transition: opacity 0.2s;
         }
         
         .logo-icon {
@@ -88,6 +97,7 @@
             justify-content: center;
             width: 22px;
             height: 22px;
+            flex-shrink: 0;
         }
 
         .logo-icon svg {
@@ -98,6 +108,31 @@
             stroke-width: 2.5;
             stroke-linecap: round;
             stroke-linejoin: round;
+        }
+
+        /* Przycisk 3 kresek (Hamburger) */
+        .toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--hover-row);
+        }
+
+        .toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-color);
+            stroke-width: 2.2;
+            stroke-linecap: round;
         }
 
         .section-title {
@@ -129,7 +164,7 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s, color 0.2s, justify-content 0.3s;
         }
 
         .menu-item:hover, .menu-item.active {
@@ -141,6 +176,7 @@
             width: 24px;
             height: 24px;
             object-fit: contain;
+            flex-shrink: 0;
         }
 
         /* Profil użytkownika na dole panelu */
@@ -152,6 +188,7 @@
             border-top: 1px solid var(--border-color);
             margin-top: auto;
             position: relative;
+            transition: border-color 0.3s, justify-content 0.3s, padding 0.3s;
         }
 
         .user-info {
@@ -168,6 +205,7 @@
             background-color: #262626;
             object-fit: cover;
             border: 1px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .user-details {
@@ -255,7 +293,7 @@
             flex-grow: 1;
             padding: 40px;
             box-sizing: border-box;
-            transition: padding 0.3s;
+            transition: margin-left 0.3s, padding 0.3s;
         }
 
         .container {
@@ -405,26 +443,71 @@
             display: flex;
             align-items: center;
         }
+
+        /* --- STYL DLA ZWINIĘTEGO PANELU BOCZNEGO (COLLAPSED STATE) --- */
+        .sidebar.collapsed {
+            width: 80px;
+            padding: 24px 12px;
+        }
+
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .section-title,
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .user-details,
+        .sidebar.collapsed .profile-more {
+            display: none;
+        }
+
+        .sidebar.collapsed .logo-container {
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        .sidebar.collapsed .user-profile {
+            justify-content: center;
+            border-top: none;
+            padding: 12px 0;
+        }
+
+        .main-content.collapsed {
+            margin-left: 80px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-top">
-            <a href="#" class="logo">
-                <span class="logo-icon">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M3 3v18h18M18.5 8.5l-5 5-3-3-4.5 4.5" />
+            <div class="logo-container">
+                <a href="#" class="logo">
+                    <span class="logo-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 3v18h18M18.5 8.5l-5 5-3-3-4.5 4.5" />
+                        </svg>
+                    </span>
+                    <span class="logo-text">TrackStat</span>
+                </a>
+                <button class="toggle-btn" id="sidebar-toggle">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <line x1="4" y1="6" x2="20" y2="6" />
+                        <line x1="4" y1="12" x2="20" y2="12" />
+                        <line x1="4" y1="18" x2="20" y2="18" />
                     </svg>
-                </span> TrackStat
-            </a>
+                </button>
+            </div>
 
             <div>
                 <div class="section-title">Games</div>
                 <div class="menu-list">
                     <a href="#" class="menu-item active">
                         <img src="https://yummytrackstat.com/items/pet-simulator-99/logo.webp" alt="PS99 Logo">
-                        Pet Simulator 99
+                        <span class="menu-text">Pet Simulator 99</span>
                     </a>
                 </div>
             </div>
@@ -454,7 +537,7 @@
         </div>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" id="main-content">
         <div class="container">
             <header>
                 <h1>Pet Simulator 99 | TrackStat</h1>
@@ -520,6 +603,26 @@
     </div>
 
     <script>
+        // --- OBSŁUGA ROZWIJANIA/ZWIJANIA SIDEBARU ---
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('collapsed');
+            
+            // Zapisz stan panelu (zwinięty/rozwinięty) w przeglądarce, aby nie resetował się przy odświeżeniu
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebar-collapsed', isCollapsed ? 'true' : 'false');
+        });
+
+        // Przywróć stan zwinięcia po załadowaniu strony
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('collapsed');
+        }
+
         // --- OBSŁUGA MOTYWÓW ---
         const themeBtn = document.getElementById('theme-btn');
         const themeDropdown = document.getElementById('theme-dropdown');
